@@ -17,47 +17,47 @@ st.title("Cutting ProRod Calculator")
 col1, col2 = st.columns(2)
 
 with col1:
-    # PL Size: Whole number input and unit in one box
-    PL_value = st.number_input('PL Size', value=0, step=1, format="%.0f")
-    PL_unit = st.selectbox('Unit for PL', ['inch', 'ft'], index=0)
+    # Whole number input for PL Size (without warning)
+    PL_value = st.number_input('PL Size', value=0, step=1)  # No format string here
+    PL_unit = st.selectbox('Unit for PL', ['inch', 'ft'])
 
-    # SO: Whole number input and unit in one box
-    SO_value = st.number_input('SO', value=0, step=1, format="%.0f")
-    SO_unit = st.selectbox('Unit for SO', ['inch', 'ft'], index=0)
+    # Whole number input for SO
+    SO_value = st.number_input('SO', value=0, step=1)  # No format string here
+    SO_unit = st.selectbox('Unit for SO', ['inch', 'ft'])
 
-    # DH: Whole number input and unit in one box
-    DH_value = st.number_input('DH', value=0, step=1, format="%.0f")
-    DH_unit = st.selectbox('Unit for DH', ['inch', 'ft'], index=0)
+    # Whole number input for DH
+    DH_value = st.number_input('DH', value=0, step=1)  # No format string here
+    DH_unit = st.selectbox('Unit for DH', ['inch', 'ft'])
 
-    # Min Stickup: Whole number input and unit in one box
-    MinStickup_value = st.number_input('Min Stickup', value=0, step=1, format="%.0f")
-    MinStickup_unit = st.selectbox('Unit for Min Stickup', ['inch', 'ft'], index=0)
+    # Whole number input for Min Stickup
+    MinStickup_value = st.number_input('Min Stickup', value=0, step=1)  # No format string here
+    MinStickup_unit = st.selectbox('Unit for Min Stickup', ['inch', 'ft'])
 
     # PSD (Meter input is kept)
-    PSD = st.number_input('PSD (m)', value=0, step=1, format="%.0f")
+    PSD = st.number_input('PSD (m)', value=0, step=1)
 
     # Poney Rotor (feet)
-    PoneyRotor = st.number_input('Poney Rotor (ft)', value=0, step=1, format="%.0f")
+    PoneyRotor = st.number_input('Poney Rotor (ft)', value=0, step=1)
 
 with col2:
     # BOP Extension Size: Whole number input and unit in one box
-    BOP_value = st.number_input('BOP Extension Size', value=0, step=1, format="%.0f")
-    BOP_unit = st.selectbox('Unit for BOP', ['inch', 'ft'], index=0)
+    BOP_value = st.number_input('BOP Extension Size', value=0, step=1)  # No format string here
+    BOP_unit = st.selectbox('Unit for BOP', ['inch', 'ft'])
 
     # SW: Whole number input and unit in one box
-    SW_value = st.number_input('SW', value=0, step=1, format="%.0f")
-    SW_unit = st.selectbox('Unit for SW', ['inch', 'ft'], index=0)
+    SW_value = st.number_input('SW', value=0, step=1)  # No format string here
+    SW_unit = st.selectbox('Unit for SW', ['inch', 'ft'])
 
     # Clamp Size: Whole number input and unit in one box
-    Clamp_value = st.number_input('Clamp Size', value=0, step=1, format="%.0f")
-    Clamp_unit = st.selectbox('Unit for Clamp', ['inch', 'ft'], index=0)
+    Clamp_value = st.number_input('Clamp Size', value=0, step=1)  # No format string here
+    Clamp_unit = st.selectbox('Unit for Clamp', ['inch', 'ft'])
 
     # Adapter Size: Whole number input and unit in one box
-    Adapter_value = st.number_input('Adapter Size', value=0, step=1, format="%.0f")
-    Adapter_unit = st.selectbox('Unit for Adapter', ['inch', 'ft'], index=0)
+    Adapter_value = st.number_input('Adapter Size', value=0, step=1)  # No format string here
+    Adapter_unit = st.selectbox('Unit for Adapter', ['inch', 'ft'])
 
     # Rotor Size (Meter input kept)
-    Rotor = st.number_input('Rotor Size (m)', value=0, step=1, format="%.0f")
+    Rotor = st.number_input('Rotor Size (m)', value=0, step=1)
 
 # Add some spacing for better UI on mobile devices
 st.write("\n" * 2)
@@ -90,5 +90,7 @@ if st.button('Calculate'):
     - **Clamp Position:** `{to_feet(Clamp_Position_inch)}`
     - **ProRod Used:** `{round(ProRod_Used, 2)} m`
     """)
+
+
 
 
