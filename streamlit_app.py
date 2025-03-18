@@ -14,20 +14,20 @@ def to_feet(value_in_inches):
 st.title("Cutting ProRod Calculator")
 
 # Columns for input layout
-col1, col2 = st.columns([4, 1])  # Adjusting column size ratio for the layout
+col1, col2 = st.columns([3, 1])  # Adjusting column size ratio for the layout
 
 with col1:
-    # PL Size: Whole number input
+    # Whole number input for PL Size
     PL_value = st.number_input('PL Size', value=0, step=1)  # No format string here
 
 with col2:
     # Unit for PL
-    PL_unit = st.selectbox('', ['inch', 'ft'], index=0, key='PL_unit', help="Select unit for PL", label_visibility="collapsed")
+    PL_unit = st.selectbox('', ['inch', 'ft'], index=0, key='PL_unit', label_visibility="collapsed")
     st.markdown("<style>div[role='listbox'] { font-size: 12px; }</style>", unsafe_allow_html=True)  # Custom CSS to make the unit smaller
 
 with col1:
     # SO: Whole number input
-    SO_value = st.number_input('SO', value=0, step=1)
+    SO_value = st.number_input('SO', value=0, step=1)  # No format string here
 
 with col2:
     # Unit for SO
@@ -36,7 +36,7 @@ with col2:
 
 with col1:
     # DH: Whole number input
-    DH_value = st.number_input('DH', value=0, step=1)
+    DH_value = st.number_input('DH', value=0, step=1)  # No format string here
 
 with col2:
     # Unit for DH
@@ -45,7 +45,7 @@ with col2:
 
 with col1:
     # Min Stickup: Whole number input
-    MinStickup_value = st.number_input('Min Stickup', value=0, step=1)
+    MinStickup_value = st.number_input('Min Stickup', value=0, step=1)  # No format string here
 
 with col2:
     # Unit for Min Stickup
@@ -89,4 +89,6 @@ if st.button('Calculate'):
     - **Clamp Position:** `{to_feet(Clamp_Position_inch)}`
     - **ProRod Used:** `{round(ProRod_Used, 2)} m`
     """)
+
+
 
