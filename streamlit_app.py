@@ -1,151 +1,81 @@
 import streamlit as st
-import pandas as pd
-import math
-from pathlib import Path
 
-# Set the title and favicon that appear in the Browser's tab bar.
-st.set_page_config(
-    page_title='GDP dashboard',
-    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
-)
+# Function to convert units to inches
+def to_inches(value, unit):
+    return value * 12 if unit == 'ft' else value
 
-# -----------------------------------------------------------------------------
-# Declare some useful functions.
+# Function to convert inches to feet
+def to_feet(value_in_inches):
+    feet = value_in_inches // 12
+    inches = value_in_inches % 12
+    return f"{int(feet)} ft {int(inches)} inch"
 
-@st.cache_data
-def get_gdp_data():
-    """Grab GDP data from a CSV file.
+st.title("Cutting ProRod Calculator")
 
-    This uses caching to avoid having to read the file every time. If we were
-    reading from an HTTP endpoint instead of a file, it's a good idea to set
-    a maximum age to the cache with the TTL argument: @st.cache_data(ttl='1d')
-    """
+# Columns for input layout
+col1, col2 = st.columns(2)
 
-    # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/gdp_data.csv'
-    raw_gdp_df = pd.read_csv(DATA_FILENAME)
+with col1:
+    PL = st.number_input('PL Size (inches or feet)', value=0.0)
+    PL_unit = st.selectbox('Unit for PL', ['inch', 'ft'])
 
-    MIN_YEAR = 1960
-    MAX_YEAR = 2022
+    SO = st.number_input('SO (inches or feet)', value=0.0)
+    SO_unit = st.selectbox('Unit for SO', ['inch', 'ft'])
 
-    # The data above has columns like:
-    # - Country Name
-    # - Country Code
-    # - [Stuff I don't care about]
-    # - GDP for 1960
-    # - GDP for 1961
-    # - GDP for 1962
-    # - ...
-    # - GDP for 2022
-    #
-    # ...but I want this instead:
-    # - Country Name
-    # - Country Code
-    # - Year
-    # - GDP
-    #
-    # So let's pivot all those year-columns into two: Year and GDP
-    gdp_df = raw_gdp_df.melt(
-        ['Country Code'],
-        [str(x) for x in range(MIN_YEAR, MAX_YEAR + 1)],
-        'Year',
-        'GDP',
-    )
+    DH = st.number_input('DH (inches or feet)', value=0.0)
+    DH_unit = st.selectbox('Unit for DH', ['inch', 'ft'])
 
-    # Convert years from string to integers
-    gdp_df['Year'] = pd.to_numeric(gdp_df['Year'])
+    MinStickup = st.number_input('Min Stickup (inches or feet)', value=0.0)
+    MinStickup_unit = st.selectbox('Unit for Min Stickup', ['inch', 'ft'])
 
-    return gdp_df
+    PSD = st.number_input('PSD (m)', value=0.0)
 
-gdp_df = get_gdp_data()
+    PoneyRotor = st.number_input('Poney Rotor (ft)', value=0.0)
 
-# -----------------------------------------------------------------------------
-# Draw the actual page
+with col2:
+    BOP = st.number_input('BOP Extension Size (inches or feet)', value=0.0)
+    BOP_unit = st.selectbox('Unit for BOP', ['inch', 'ft'])
 
-# Set the title that appears at the top of the page.
-'''
-# :earth_americas: GDP dashboard
+    SW = st.number_input('SW (inches or feet)', value=0.0)
+    SW_unit = st.selectbox('Unit for SW', ['inch', 'ft'])
 
-Browse GDP data from the [World Bank Open Data](https://data.worldbank.org/) website. As you'll
-notice, the data only goes to 2022 right now, and datapoints for certain years are often missing.
-But it's otherwise a great (and did I mention _free_?) source of data.
-'''
+    Clamp = st.number_input('Clamp Size (inches or feet)', value=0.0)
+    Clamp_unit = st.selectbox('Unit for Clamp', ['inch', 'ft'])
 
-# Add some spacing
-''
-''
+    Adapter = st.number_input('Adapter Size (inches or feet)', value=0.0)
+    Adapter_unit = st.selectbox('Unit for Adapter', ['inch', 'ft'])
 
-min_value = gdp_df['Year'].min()
-max_value = gdp_df['Year'].max()
+    Rotor = st.number_input('Rotor Size (m)', value=0.0)
 
-from_year, to_year = st.slider(
-    'Which years are you interested in?',
-    min_value=min_value,
-    max_value=max_value,
-    value=[min_value, max_value])
+# Add some spacing for better UI on mobile devices
+st.write("\n" * 2)
 
-countries = gdp_df['Country Code'].unique()
+# Button to calculate the results
+if st.button('Calculate'):
+    # Convert all inputs to inches for calculation
+    PL = to_inches(PL, PL_unit)
+    BOP = to_inches(BOP, BOP_unit)
+    SO = to_inches(SO, SO_unit)
+    SW = to_inches(SW, SW_unit)
+    DH = to_inches(DH, DH_unit)
+    Clamp = to_inches(Clamp, Clamp_unit)
+    MinStickup = to_inches(MinStickup, MinStickup_unit)
+    Adapter = to_inches(Adapter, Adapter_unit)
 
-if not len(countries):
-    st.warning("Select at least one country")
+    # Perform calculations
+    Cutting_ProRod_Length_inch = (PL + BOP + SO + SW + 12 + 48) - (DH + Clamp + MinStickup + Adapter)
+    RC_Value_inch = (DH + Adapter) - (SW + SO)
+    Clamp_Position_inch = (RC_Value_inch + (SW + SO)) - DH
 
-selected_countries = st.multiselect(
-    'Which countries would you like to view?',
-    countries,
-    ['DEU', 'FRA', 'GBR', 'BRA', 'MEX', 'JPN'])
+    # Convert rotor and poney rotor for the final ProRod Used
+    ProRod_Used = (Rotor + (PoneyRotor * 0.3048) + (1.82 * 3) + (0.294 * 3)) - PSD
 
-''
-''
-''
+    # Show the results
+    st.markdown(f"""
+    ### Results:
+    - **Cutting ProRod Length:** `{to_feet(Cutting_ProRod_Length_inch)}`
+    - **RC Value:** `{to_feet(RC_Value_inch)}`
+    - **Clamp Position:** `{to_feet(Clamp_Position_inch)}`
+    - **ProRod Used:** `{round(ProRod_Used, 2)} m`
+    """)
 
-# Filter the data
-filtered_gdp_df = gdp_df[
-    (gdp_df['Country Code'].isin(selected_countries))
-    & (gdp_df['Year'] <= to_year)
-    & (from_year <= gdp_df['Year'])
-]
-
-st.header('GDP over time', divider='gray')
-
-''
-
-st.line_chart(
-    filtered_gdp_df,
-    x='Year',
-    y='GDP',
-    color='Country Code',
-)
-
-''
-''
-
-
-first_year = gdp_df[gdp_df['Year'] == from_year]
-last_year = gdp_df[gdp_df['Year'] == to_year]
-
-st.header(f'GDP in {to_year}', divider='gray')
-
-''
-
-cols = st.columns(4)
-
-for i, country in enumerate(selected_countries):
-    col = cols[i % len(cols)]
-
-    with col:
-        first_gdp = first_year[first_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-        last_gdp = last_year[last_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-
-        if math.isnan(first_gdp):
-            growth = 'n/a'
-            delta_color = 'off'
-        else:
-            growth = f'{last_gdp / first_gdp:,.2f}x'
-            delta_color = 'normal'
-
-        st.metric(
-            label=f'{country} GDP',
-            value=f'{last_gdp:,.0f}B',
-            delta=growth,
-            delta_color=delta_color
-        )
