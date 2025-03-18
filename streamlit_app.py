@@ -2,9 +2,10 @@ import streamlit as st
 
 # Function to convert units to inches
 def to_inches(value, unit):
+    # If unit is 'ft', convert to inches by multiplying by 12
     return value * 12 if unit == 'ft' else value
 
-# Function to convert inches to feet
+# Function to convert inches to feet and inches
 def to_feet(value_in_inches):
     feet = value_in_inches // 12
     inches = value_in_inches % 12
@@ -16,36 +17,47 @@ st.title("Cutting ProRod Calculator")
 col1, col2 = st.columns(2)
 
 with col1:
-    PL = st.number_input('PL Size (inches or feet)', value=0.0)
+    # Whole number input for PL Size
+    PL = st.number_input('PL Size', value=0, step=1)
     PL_unit = st.selectbox('Unit for PL', ['inch', 'ft'])
 
-    SO = st.number_input('SO (inches or feet)', value=0.0)
+    # Whole number input for SO
+    SO = st.number_input('SO', value=0, step=1)
     SO_unit = st.selectbox('Unit for SO', ['inch', 'ft'])
 
-    DH = st.number_input('DH (inches or feet)', value=0.0)
+    # Whole number input for DH
+    DH = st.number_input('DH', value=0, step=1)
     DH_unit = st.selectbox('Unit for DH', ['inch', 'ft'])
 
-    MinStickup = st.number_input('Min Stickup (inches or feet)', value=0.0)
+    # Whole number input for Min Stickup
+    MinStickup = st.number_input('Min Stickup', value=0, step=1)
     MinStickup_unit = st.selectbox('Unit for Min Stickup', ['inch', 'ft'])
 
-    PSD = st.number_input('PSD (m)', value=0.0)
+    # Whole number input for PSD (Meter input is kept)
+    PSD = st.number_input('PSD (m)', value=0, step=1)
 
-    PoneyRotor = st.number_input('Poney Rotor (ft)', value=0.0)
+    # Whole number input for Poney Rotor (feet)
+    PoneyRotor = st.number_input('Poney Rotor (ft)', value=0, step=1)
 
 with col2:
-    BOP = st.number_input('BOP Extension Size (inches or feet)', value=0.0)
+    # Whole number input for BOP Extension Size
+    BOP = st.number_input('BOP Extension Size', value=0, step=1)
     BOP_unit = st.selectbox('Unit for BOP', ['inch', 'ft'])
 
-    SW = st.number_input('SW (inches or feet)', value=0.0)
+    # Whole number input for SW
+    SW = st.number_input('SW', value=0, step=1)
     SW_unit = st.selectbox('Unit for SW', ['inch', 'ft'])
 
-    Clamp = st.number_input('Clamp Size (inches or feet)', value=0.0)
+    # Whole number input for Clamp Size
+    Clamp = st.number_input('Clamp Size', value=0, step=1)
     Clamp_unit = st.selectbox('Unit for Clamp', ['inch', 'ft'])
 
-    Adapter = st.number_input('Adapter Size (inches or feet)', value=0.0)
+    # Whole number input for Adapter Size
+    Adapter = st.number_input('Adapter Size', value=0, step=1)
     Adapter_unit = st.selectbox('Unit for Adapter', ['inch', 'ft'])
 
-    Rotor = st.number_input('Rotor Size (m)', value=0.0)
+    # Whole number input for Rotor Size (Meter input kept)
+    Rotor = st.number_input('Rotor Size (m)', value=0, step=1)
 
 # Add some spacing for better UI on mobile devices
 st.write("\n" * 2)
