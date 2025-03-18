@@ -18,19 +18,19 @@ col1, col2 = st.columns(2)
 
 with col1:
     # Whole number input for PL Size
-    PL = st.number_input('PL Size', value=0, step=1)
+    PL_value = st.number_input('PL Size', value=0, step=1)
     PL_unit = st.selectbox('Unit for PL', ['inch', 'ft'])
 
     # Whole number input for SO
-    SO = st.number_input('SO', value=0, step=1)
+    SO_value = st.number_input('SO', value=0, step=1)
     SO_unit = st.selectbox('Unit for SO', ['inch', 'ft'])
 
     # Whole number input for DH
-    DH = st.number_input('DH', value=0, step=1)
+    DH_value = st.number_input('DH', value=0, step=1)
     DH_unit = st.selectbox('Unit for DH', ['inch', 'ft'])
 
     # Whole number input for Min Stickup
-    MinStickup = st.number_input('Min Stickup', value=0, step=1)
+    MinStickup_value = st.number_input('Min Stickup', value=0, step=1)
     MinStickup_unit = st.selectbox('Unit for Min Stickup', ['inch', 'ft'])
 
     # Whole number input for PSD (Meter input is kept)
@@ -41,19 +41,19 @@ with col1:
 
 with col2:
     # Whole number input for BOP Extension Size
-    BOP = st.number_input('BOP Extension Size', value=0, step=1)
+    BOP_value = st.number_input('BOP Extension Size', value=0, step=1)
     BOP_unit = st.selectbox('Unit for BOP', ['inch', 'ft'])
 
     # Whole number input for SW
-    SW = st.number_input('SW', value=0, step=1)
+    SW_value = st.number_input('SW', value=0, step=1)
     SW_unit = st.selectbox('Unit for SW', ['inch', 'ft'])
 
     # Whole number input for Clamp Size
-    Clamp = st.number_input('Clamp Size', value=0, step=1)
+    Clamp_value = st.number_input('Clamp Size', value=0, step=1)
     Clamp_unit = st.selectbox('Unit for Clamp', ['inch', 'ft'])
 
     # Whole number input for Adapter Size
-    Adapter = st.number_input('Adapter Size', value=0, step=1)
+    Adapter_value = st.number_input('Adapter Size', value=0, step=1)
     Adapter_unit = st.selectbox('Unit for Adapter', ['inch', 'ft'])
 
     # Whole number input for Rotor Size (Meter input kept)
@@ -65,14 +65,14 @@ st.write("\n" * 2)
 # Button to calculate the results
 if st.button('Calculate'):
     # Convert all inputs to inches for calculation
-    PL = to_inches(PL, PL_unit)
-    BOP = to_inches(BOP, BOP_unit)
-    SO = to_inches(SO, SO_unit)
-    SW = to_inches(SW, SW_unit)
-    DH = to_inches(DH, DH_unit)
-    Clamp = to_inches(Clamp, Clamp_unit)
-    MinStickup = to_inches(MinStickup, MinStickup_unit)
-    Adapter = to_inches(Adapter, Adapter_unit)
+    PL = to_inches(PL_value, PL_unit)
+    BOP = to_inches(BOP_value, BOP_unit)
+    SO = to_inches(SO_value, SO_unit)
+    SW = to_inches(SW_value, SW_unit)
+    DH = to_inches(DH_value, DH_unit)
+    Clamp = to_inches(Clamp_value, Clamp_unit)
+    MinStickup = to_inches(MinStickup_value, MinStickup_unit)
+    Adapter = to_inches(Adapter_value, Adapter_unit)
 
     # Perform calculations
     Cutting_ProRod_Length_inch = (PL + BOP + SO + SW + 12 + 48) - (DH + Clamp + MinStickup + Adapter)
@@ -90,4 +90,5 @@ if st.button('Calculate'):
     - **Clamp Position:** `{to_feet(Clamp_Position_inch)}`
     - **ProRod Used:** `{round(ProRod_Used, 2)} m`
     """)
+
 
